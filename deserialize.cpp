@@ -6,8 +6,6 @@
 #include <algorithm>
 #include <sstream>
 
-//File Preprocessing
-
 std::string PortfolioTree::serialize()
 {
     return serializeToJSON(root);
@@ -36,7 +34,10 @@ std::string PortfolioTree::serializeToJSON(PortfolioNode &node)
 
 int main()
 {
-    std::ifstream currFile("JSONtree.txt");
+    //file preprocess, remove spaces and new lines
+    //each tree on own line, store into string[] array
+    //for loop through array instead of while loop through file
+    std::ifstream currFile("jsontreeformat.txt");
     std::string thisLine;
     PortfolioTree ptree;
 
@@ -100,12 +101,16 @@ int main()
     // Build Tree Here
     for (int i = 0; i <= cNode; i++)
     {
-        int id = stoi(dataValues.front());
+        std::string temp = dataValues.front();
+        temp = temp.substr(1, std::string::npos);
+        int id = stoi(temp);
         dataValues.pop();
         std::string type = dataValues.front();
         type.erase(std::remove(type.begin(), type.end(), '"'), type.end());
         dataValues.pop();
-        int size = stoi(dataValues.front());
+        temp = dataValues.front();
+        temp = temp.substr(3, std::string::npos);
+        int size = stoi(temp);
         dataValues.pop();
         pNodes.push_back(PortfolioNode(id, type, size));
     }
